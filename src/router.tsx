@@ -1,6 +1,5 @@
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
-import { NotFound } from './shared/layout/NotFound'
 
 export function getRouter() {
   const router = createTanStackRouter({
@@ -9,7 +8,6 @@ export function getRouter() {
     defaultPreload: 'intent',
     defaultPreloadStaleTime: 0,
     defaultViewTransition: true,
-    defaultNotFoundComponent: NotFound,
   })
 
   return router

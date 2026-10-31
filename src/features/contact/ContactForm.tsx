@@ -1,110 +1,67 @@
-import { useCallback, useReducer } from 'react'
+import { useState } from 'react'
 import { useServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 import { css } from 'styled-system/css'
 import { sendContact } from './contact.functions'
-import {
-  contactFormReducer,
-  initialContactFormState,
-} from './contact-form.state'
-import { parseContactForm } from './contact.validation'
-import type { ContactField } from './contact.schema'
+import { contactSchema } from './contact.schema'
 
-const GENERIC_ERROR = 'Something went wrong sending your message. Please try again.'
+type FieldErrors = Partial<Record<'name' | 'email' | 'message', Array<string>>>
 
-const FIELDS: ReadonlyArray<{
-  name: ContactField
-  label: string
-  type: 'text' | 'email' | 'textarea'
-  autoComplete?: string
-}> = [
-  { name: 'name', label: 'Name', type: 'text', autoComplete: 'name' },
-  { name: 'email', label: 'Email', type: 'email', autoComplete: 'email' },
-  { name: 'message', label: 'Message', type: 'textarea' },
-]
+type FormState =
+  | { status: 'idle'; fieldErrors: FieldErrors }
+  | { status: 'submitting' }
+  | { status: 'success' }
+  | { status: 'error' }
 
 const styles = {
-  form: css({ display: 'grid', gap: '5', maxW: 'xl' }),
-  field: css({ display: 'grid', gap: '1' }),
-  label: css({ fontWeight: 'medium' }),
-  input: css({
-    bg: 'surface',
-    color: 'fg',
-    borderWidth: '1px',
-    borderColor: 'border',
-    borderRadius: 'md',
-    px: '3',
-    py: '2',
-    _focusVisible: { outline: '2px solid', outlineColor: 'accent' },
-    '&[aria-invalid="true"]': { borderColor: 'red.500' },
-  }),
-  textarea: css({ minH: '40' }),
+  form: css({ display: 'grid', gap: '4', maxW: 'xl' }),
+  input: css({ borderWidth: '1px', borderColor: 'border', px: '3', py: '2' }),
   error: css({ color: 'red.500', fontSize: 'sm' }),
-  button: css({
-    justifySelf: 'start',
-    bg: 'accent',
-    color: 'white',
-    fontWeight: 'semibold',
-    px: '5',
-    py: '2',
-    borderRadius: 'md',
-    cursor: 'pointer',
-    _disabled: { opacity: 0.6, cursor: 'wait' },
-  }),
-  success: css({ color: 'green.600', fontWeight: 'medium' }),
 }
 
 /**
- * Reads the contact fields from submitted form data.
- * @param form - The submitted form element
- * @returns Raw values keyed by field name
- * @throws Never
- */
-function readFormValues(form: HTMLFormElement): Record<string, unknown> {
-  const data = new FormData(form)
-  return Object.fromEntries(FIELDS.map((field) => [field.name, data.get(field.name)]))
-}
-
-/**
- * Contact form that validates on the client, then calls the `sendContact` server function.
+ * Minimal contact form that validates with Zod and calls the `sendContact` server function.
  * @returns The form with loading, success and error states
  * @throws Never
  */
 export function ContactForm() {
   const send = useServerFn(sendContact)
-  const [state, dispatch] = useReducer(
-    contactFormReducer,
-    initialContactFormState,
-  )
+  const [state, setState] = useState<FormState>({
+    status: 'idle',
+    fieldErrors: {},
+  })
 
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-      const parsed = parseContactForm(readFormValues(event.currentTarget))
-      if (!parsed.ok) {
-        dispatch({ type: 'invalid', fieldErrors: parsed.fieldErrors })
-        return
-      }
-      dispatch({ type: 'submit' })
-      try {
-        await send({ data: parsed.value })
-        dispatch({ type: 'succeeded' })
-      } catch {
-        dispatch({ type: 'failed', message: GENERIC_ERROR })
-      }
-    },
-    [send],
-  )
-
-  const fieldErrors = state.status === 'idle' ? state.fieldErrors : {}
-  const isSubmitting = state.status === 'submitting'
+  /**
+   * Validates the submitted fields and sends them to the server.
+   * @param event - Form submit event
+   * @returns Resolves once the request settles
+   * @throws Never
+   */
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const values = Object.fromEntries(new FormData(event.currentTarget))
+    const result = contactSchema.safeParse(values)
+    if (!result.success) {
+      setState({
+        status: 'idle',
+        fieldErrors: z.flattenError(result.error).fieldErrors,
+      })
+      return
+    }
+    setState({ status: 'submitting' })
+    try {
+      await send({ data: result.data })
+      setState({ status: 'success' })
+    } catch {
+      setState({ status: 'error' })
+    }
+  }
 
   if (state.status === 'success') {
-    return (
-      <p role="status" className={styles.success}>
-        Thanks! Your message is on its way.
-      </p>
-    )
+    return <p role="status">Thanks! Your message is on its way.</p>
   }
+
+  const errors = state.status === 'idle' ? state.fieldErrors : {}
 
   return (
     <form
@@ -113,50 +70,36 @@ export function ContactForm() {
       className={styles.form}
       onSubmit={(event) => void handleSubmit(event)}
     >
-      {FIELDS.map((field) => {
-        const error = fieldErrors[field.name]
-        const inputId = `contact-${field.name}`
-        const errorId = `${inputId}-error`
-        const shared = {
-          id: inputId,
-          name: field.name,
-          'aria-invalid': error !== undefined,
-          'aria-describedby': error === undefined ? undefined : errorId,
-          disabled: isSubmitting,
-        }
-        return (
-          <div key={field.name} className={styles.field}>
-            <label htmlFor={inputId} className={styles.label}>
-              {field.label}
-            </label>
-            {field.type === 'textarea' ? (
-              <textarea
-                {...shared}
-                className={`${styles.input} ${styles.textarea}`}
-              />
-            ) : (
-              <input
-                {...shared}
-                type={field.type}
-                autoComplete={field.autoComplete}
-                className={styles.input}
-              />
-            )}
-            {error !== undefined && (
-              <p id={errorId} className={styles.error}>
-                {error}
-              </p>
-            )}
-          </div>
-        )
-      })}
+      <label htmlFor="contact-name">Name</label>
+      <input id="contact-name" name="name" className={styles.input} />
+      {errors.name?.[0] && <p className={styles.error}>{errors.name[0]}</p>}
+
+      <label htmlFor="contact-email">Email</label>
+      <input
+        id="contact-email"
+        name="email"
+        type="email"
+        className={styles.input}
+      />
+      {errors.email?.[0] && <p className={styles.error}>{errors.email[0]}</p>}
+
+      <label htmlFor="contact-message">Message</label>
+      <textarea
+        id="contact-message"
+        name="message"
+        className={styles.input}
+      />
+      {errors.message?.[0] && (
+        <p className={styles.error}>{errors.message[0]}</p>
+      )}
+
       {state.status === 'error' && (
         <p role="alert" className={styles.error}>
-          {state.message}
+          Something went wrong. Please try again.
         </p>
       )}
-      <button type="submit" disabled={isSubmitting} className={styles.button}>
-        {isSubmitting ? 'Sending…' : 'Send message'}
+      <button type="submit" disabled={state.status === 'submitting'}>
+        {state.status === 'submitting' ? 'Sending…' : 'Send'}
       </button>
     </form>
   )

@@ -1,19 +1,9 @@
 import { z } from 'zod'
 
 export const contactSchema = z.object({
-  name: z.string().trim().min(1, 'Please enter your name.').max(100),
+  name: z.string().trim().min(1, 'Please enter your name.'),
   email: z.email('Please enter a valid email address.'),
-  message: z
-    .string()
-    .trim()
-    .min(10, 'Please write at least 10 characters.')
-    .max(5000, 'Please keep it under 5000 characters.'),
+  message: z.string().trim().min(10, 'Please write at least 10 characters.'),
 })
 
 export type ContactMessage = z.infer<typeof contactSchema>
-
-export const CONTACT_FIELDS = ['name', 'email', 'message'] as const
-
-export type ContactField = (typeof CONTACT_FIELDS)[number]
-
-export type ContactFieldErrors = Partial<Record<ContactField, string>>

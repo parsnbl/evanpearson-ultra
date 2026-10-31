@@ -1,3 +1,0 @@
-# Copy to .dev.vars for local development (read by the Cloudflare Vite plugin).
-# When unset, contact submissions are accepted as a dry run.
-CONTACT_EMAIL_TO=

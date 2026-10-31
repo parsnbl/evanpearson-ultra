@@ -3,7 +3,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { renderServerComponent } from '@tanstack/react-start/rsc'
 import { allPosts } from 'content-collections'
 import { z } from 'zod'
-import { mdxComponents } from './mdxComponents'
+import { mdxComponents } from '#/shared/mdx/mdxComponents'
 import { findPostBySlug, sortPostsByDateDesc, toPostSummary } from './posts'
 
 export const getPostSummaries = createServerFn({ method: 'GET' }).handler(() =>
