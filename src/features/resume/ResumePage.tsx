@@ -1,3 +1,4 @@
+import { MotionConfig, motion } from 'motion/react'
 import { css } from 'styled-system/css'
 import { SITE } from '#/shared/site'
 
@@ -7,6 +8,10 @@ const PLACEHOLDER_SECTIONS = [
   { id: 'skills', title: 'Skills' },
   { id: 'education', title: 'Education' },
 ] as const
+
+const INTRO_INITIAL = { opacity: 0, y: 12 } as const
+const INTRO_ANIMATE = { opacity: 1, y: 0 } as const
+const INTRO_TRANSITION = { duration: 0.4, ease: 'easeOut' } as const
 
 const styles = {
   intro: css({ mb: 'section' }),
@@ -31,11 +36,16 @@ const styles = {
  */
 export function ResumePage() {
   return (
-    <>
-      <header className={styles.intro}>
+    <MotionConfig reducedMotion="user">
+      <motion.header
+        className={styles.intro}
+        initial={INTRO_INITIAL}
+        animate={INTRO_ANIMATE}
+        transition={INTRO_TRANSITION}
+      >
         <h1 className={styles.name}>{SITE.author.name}</h1>
         <p className={styles.role}>{SITE.author.jobTitle}</p>
-      </header>
+      </motion.header>
       {PLACEHOLDER_SECTIONS.map((section) => (
         <section
           key={section.id}
@@ -49,6 +59,6 @@ export function ResumePage() {
           <p className={styles.placeholder}>Content coming soon.</p>
         </section>
       ))}
-    </>
+    </MotionConfig>
   )
 }
