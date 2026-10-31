@@ -17,3 +17,5 @@ styled-system
 
 # content-collections
 .content-collections
+# Cloudflare local secrets
+.dev.vars

@@ -9,6 +9,7 @@ type Props = {
 const NAV_LINKS = [
   { to: '/', label: 'Resume' },
   { to: '/blog', label: 'Blog' },
+  { to: '/contact', label: 'Contact' },
 ] as const
 
 const styles = {
