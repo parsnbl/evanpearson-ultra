@@ -15,7 +15,9 @@
     "format": "prettier --write . && eslint --fix",
     "check": "prettier --check .",
     "deploy": "pnpm run build && wrangler deploy",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.13.10",
@@ -54,6 +56,7 @@
     "remark-mdx-frontmatter": "^6.0.0",
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
+    "vitest": "^5.0.5",
     "wrangler": "^4.70.0"
   },
   "pnpm": {
