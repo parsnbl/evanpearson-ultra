@@ -1,18 +1,12 @@
-
-@import "tailwindcss";
-@layer reset, base, tokens, recipes, utilities;
-
 * {
   box-sizing: border-box;
 }
 
 html,
-body,
-#app {
+body {
   min-height: 100%;
 }
 
 body {
   margin: 0;
 }
-

@@ -5,7 +5,7 @@
   "typescript": true,
   "packageManager": "pnpm",
   "includeExamples": false,
-  "tailwind": true,
+  "tailwind": false,
   "projectPreset": "default",
   "routerOnly": false,
   "addOnOptions": {},
@@ -18,9 +18,6 @@
     "eslint",
     "cloudflare",
     "compiler",
-    "form",
-    "t3env",
-    "table",
-    "tanstack-query"
+    "t3env"
   ]
 }
