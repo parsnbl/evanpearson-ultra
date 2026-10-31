@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   buildBlogPostingJsonLd,
   buildPersonJsonLd,
+  buildWebPageJsonLd,
   serializeJsonLd,
 } from './json-ld'
 
@@ -83,6 +84,32 @@ describe('serializeJsonLd', () => {
     expect(json).not.toContain('</script>')
     expect(JSON.parse(json)).toMatchObject({
       name: '</script><script>alert(1)</script>',
+    })
+  })
+})
+
+describe('buildWebPageJsonLd', () => {
+  it('builds a schema.org WebPage with an author reference', () => {
+    expect(
+      buildWebPageJsonLd({
+        title: 'Hire me',
+        description: 'Contract work.',
+        url: 'https://evan-pearson.com/l/hire-me',
+        language: 'en',
+        author: { name: 'Evan Pearson', url: 'https://evan-pearson.com' },
+      }),
+    ).toEqual({
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: 'Hire me',
+      description: 'Contract work.',
+      url: 'https://evan-pearson.com/l/hire-me',
+      inLanguage: 'en',
+      author: {
+        '@type': 'Person',
+        name: 'Evan Pearson',
+        url: 'https://evan-pearson.com',
+      },
     })
   })
 })

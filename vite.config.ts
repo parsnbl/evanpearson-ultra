@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import { devtools } from '@tanstack/devtools-vite'
@@ -13,6 +14,10 @@ import mdx from '@mdx-js/rollup'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 import { SITE } from './src/shared/site'
+
+const landingPages = readdirSync('content/landing')
+  .filter((file) => file.endsWith('.mdx'))
+  .map((file) => ({ path: `/l/${file.replace(/\.mdx$/, '')}` }))
 
 const config = defineConfig({
   resolve: {
@@ -39,7 +44,11 @@ const config = defineConfig({
         failOnError: true,
         autoStaticPathsDiscovery: false,
       },
-      pages: [{ path: '/' }, { path: '/rss.xml', sitemap: { exclude: true } }],
+      pages: [
+        { path: '/' },
+        { path: '/rss.xml', sitemap: { exclude: true } },
+        ...landingPages,
+      ],
       sitemap: { enabled: true, host: SITE.url },
     }),
     rsc(),

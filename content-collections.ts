@@ -1,6 +1,7 @@
 import { defineConfig } from '@content-collections/core'
 import type { WriterHook } from '@content-collections/core'
 import { posts } from './src/features/blog/posts.collection'
+import { landingPages } from './src/features/landing/landing.collection'
 
 /**
  * Marks generated collection modules as server-only so content never reaches the client bundle.
@@ -16,6 +17,6 @@ const serverOnlyHook: WriterHook = ({ fileType, content }) =>
     : { content: `import '@tanstack/react-start/server-only';\n\n${content}` }
 
 export default defineConfig({
-  content: [posts],
+  content: [posts, landingPages],
   hooks: { writer: [serverOnlyHook] },
 })

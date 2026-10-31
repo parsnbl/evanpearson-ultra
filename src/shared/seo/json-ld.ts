@@ -27,6 +27,16 @@ export type BlogPostingJsonLd = {
   inLanguage: string
 }
 
+export type WebPageJsonLd = {
+  '@context': 'https://schema.org'
+  '@type': 'WebPage'
+  name: string
+  description: string
+  url: string
+  inLanguage: string
+  author: PersonReference
+}
+
 export type PersonInput = {
   name: string
   url: string
@@ -38,6 +48,14 @@ export type BlogPostingInput = {
   title: string
   summary: string
   date: string
+  url: string
+  language: string
+  author: { name: string; url: string }
+}
+
+export type WebPageInput = {
+  title: string
+  description: string
   url: string
   language: string
   author: { name: string; url: string }
@@ -90,11 +108,31 @@ export function buildBlogPostingJsonLd(
 }
 
 /**
+ * Builds schema.org `WebPage` structured data for a landing page.
+ * @param page - Page metadata plus its absolute URL and author
+ * @returns A JSON-LD `WebPage` object
+ * @throws Never
+ */
+export function buildWebPageJsonLd(page: WebPageInput): WebPageJsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: page.title,
+    description: page.description,
+    url: page.url,
+    inLanguage: page.language,
+    author: { '@type': 'Person', name: page.author.name, url: page.author.url },
+  }
+}
+
+/**
  * Serializes JSON-LD for an inline `<script>`, escaping `<` so content cannot close the tag.
  * @param data - JSON-LD object
  * @returns A JSON string safe to embed in HTML
  * @throws {TypeError} If `data` contains a circular reference or BigInt
  */
-export function serializeJsonLd(data: PersonJsonLd | BlogPostingJsonLd): string {
+export function serializeJsonLd(
+  data: PersonJsonLd | BlogPostingJsonLd | WebPageJsonLd,
+): string {
   return JSON.stringify(data).replace(/</g, '\\u003c')
 }

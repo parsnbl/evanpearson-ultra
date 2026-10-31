@@ -1,4 +1,5 @@
 import { defineConfig } from '@pandacss/dev'
+import { heroRecipe } from './src/features/landing/recipes/hero.recipe'
 
 export default defineConfig({
   presets: ['@pandacss/preset-base', '@pandacss/preset-panda'],
@@ -16,6 +17,9 @@ export default defineConfig({
   },
   theme: {
     extend: {
+      recipes: {
+        hero: heroRecipe,
+      },
       tokens: {
         colors: {
           ink: {
