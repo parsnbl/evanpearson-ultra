@@ -1,10 +1,6 @@
 import { SITE } from '#/shared/site'
 import { serializeJsonLd } from './json-ld'
-import type {
-  BlogPostingJsonLd,
-  PersonJsonLd,
-  WebPageJsonLd,
-} from './json-ld'
+import type { BlogPostingJsonLd, PersonJsonLd, WebPageJsonLd } from './json-ld'
 
 export const OgType = { WEBSITE: 'website', ARTICLE: 'article' } as const
 type OgTypeValue = (typeof OgType)[keyof typeof OgType]
@@ -71,6 +67,11 @@ export function buildPageHead(input: PageHeadInput): PageHead {
   const scripts: Array<ScriptTag> =
     input.jsonLd === undefined
       ? []
-      : [{ type: 'application/ld+json', children: serializeJsonLd(input.jsonLd) }]
+      : [
+          {
+            type: 'application/ld+json',
+            children: serializeJsonLd(input.jsonLd),
+          },
+        ]
   return { meta, links: [{ rel: 'canonical', href: url }], scripts }
 }

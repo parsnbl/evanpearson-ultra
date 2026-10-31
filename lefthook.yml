@@ -1,0 +1,16 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      run: pnpm lint
+    typecheck:
+      run: pnpm typecheck
+    test:
+      run: pnpm test
+    format:
+      run: pnpm format:check
+
+pre-push:
+  commands:
+    e2e:
+      run: pnpm test:e2e

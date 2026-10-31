@@ -1,4 +1,7 @@
-import { createDefaultImport, defineCollection } from '@content-collections/core'
+import {
+  createDefaultImport,
+  defineCollection,
+} from '@content-collections/core'
 import type { MDXContent } from 'mdx/types'
 import { z } from 'zod'
 

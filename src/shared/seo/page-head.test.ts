@@ -48,8 +48,7 @@ describe('buildPageHead', () => {
     expect(scripts).toEqual([])
     expect(
       meta.some(
-        (tag) =>
-          'property' in tag && tag.property === 'article:published_time',
+        (tag) => 'property' in tag && tag.property === 'article:published_time',
       ),
     ).toBe(false)
   })

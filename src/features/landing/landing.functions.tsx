@@ -17,6 +17,8 @@ export const getLandingPage = createServerFn({ method: 'GET' })
       slug: page.slug,
       title: page.title,
       description: page.description,
-      body: await renderServerComponent(<Body components={landingComponents} />),
+      body: await renderServerComponent(
+        <Body components={landingComponents} />,
+      ),
     }
   })

@@ -37,7 +37,7 @@ export function ContactForm() {
    * @returns Resolves once the request settles
    * @throws Never
    */
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     const values = Object.fromEntries(new FormData(event.currentTarget))
     const result = contactSchema.safeParse(values)
@@ -84,11 +84,7 @@ export function ContactForm() {
       {errors.email?.[0] && <p className={styles.error}>{errors.email[0]}</p>}
 
       <label htmlFor="contact-message">Message</label>
-      <textarea
-        id="contact-message"
-        name="message"
-        className={styles.input}
-      />
+      <textarea id="contact-message" name="message" className={styles.input} />
       {errors.message?.[0] && (
         <p className={styles.error}>{errors.message[0]}</p>
       )}

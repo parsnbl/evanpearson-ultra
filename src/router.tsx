@@ -14,6 +14,7 @@ export function getRouter() {
 }
 
 declare module '@tanstack/react-router' {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- module augmentation requires interface merging
   interface Register {
     router: ReturnType<typeof getRouter>
   }

@@ -13,13 +13,18 @@ import contentCollections from '@content-collections/vite'
 import mdx from '@mdx-js/rollup'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
-import { SITE } from './src/shared/site'
+import { SITE } from './src/shared/site.ts'
 
 const landingPages = readdirSync('content/landing')
   .filter((file) => file.endsWith('.mdx'))
   .map((file) => ({ path: `/l/${file.replace(/\.mdx$/, '')}` }))
 
 const config = defineConfig({
+  build: {
+    rolldownOptions: {
+      checks: { sourcemapBroken: false },
+    },
+  },
   resolve: {
     tsconfigPaths: true,
     alias: {

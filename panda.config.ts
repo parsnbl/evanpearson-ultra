@@ -72,7 +72,10 @@ export default defineConfig({
             value: { base: '{colors.ink.100}', _osDark: '{colors.ink.700}' },
           },
           accent: {
-            value: { base: '{colors.brand.600}', _osDark: '{colors.brand.400}' },
+            value: {
+              base: '{colors.brand.600}',
+              _osDark: '{colors.brand.400}',
+            },
           },
         },
       },

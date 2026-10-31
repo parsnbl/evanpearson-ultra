@@ -19,3 +19,8 @@ styled-system
 .content-collections
 # Cloudflare local secrets
 .dev.vars
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

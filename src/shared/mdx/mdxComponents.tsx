@@ -40,17 +40,59 @@ const styles = {
 }
 
 export const mdxComponents = {
-  h1: (props) => <h1 {...props} className={styles.h1} />,
-  h2: (props) => <h2 {...props} className={styles.h2} />,
-  h3: (props) => <h3 {...props} className={styles.h3} />,
-  p: (props) => <p {...props} className={styles.p} />,
-  a: (props) => <a {...props} className={styles.a} />,
-  ul: (props) => <ul {...props} className={styles.ul} />,
-  ol: (props) => <ol {...props} className={styles.ol} />,
-  li: (props) => <li {...props} className={styles.li} />,
-  blockquote: (props) => (
-    <blockquote {...props} className={styles.blockquote} />
+  h1: ({ children, ...props }) => (
+    <h1 {...props} className={styles.h1}>
+      {children}
+    </h1>
   ),
-  code: (props) => <code {...props} className={styles.code} />,
-  pre: (props) => <pre {...props} className={styles.pre} />,
+  h2: ({ children, ...props }) => (
+    <h2 {...props} className={styles.h2}>
+      {children}
+    </h2>
+  ),
+  h3: ({ children, ...props }) => (
+    <h3 {...props} className={styles.h3}>
+      {children}
+    </h3>
+  ),
+  p: ({ children, ...props }) => (
+    <p {...props} className={styles.p}>
+      {children}
+    </p>
+  ),
+  a: ({ children, ...props }) => (
+    <a {...props} className={styles.a}>
+      {children}
+    </a>
+  ),
+  ul: ({ children, ...props }) => (
+    <ul {...props} className={styles.ul}>
+      {children}
+    </ul>
+  ),
+  ol: ({ children, ...props }) => (
+    <ol {...props} className={styles.ol}>
+      {children}
+    </ol>
+  ),
+  li: ({ children, ...props }) => (
+    <li {...props} className={styles.li}>
+      {children}
+    </li>
+  ),
+  blockquote: ({ children, ...props }) => (
+    <blockquote {...props} className={styles.blockquote}>
+      {children}
+    </blockquote>
+  ),
+  code: ({ children, ...props }) => (
+    <code {...props} className={styles.code}>
+      {children}
+    </code>
+  ),
+  pre: ({ children, ...props }) => (
+    <pre {...props} className={styles.pre}>
+      {children}
+    </pre>
+  ),
 } satisfies MDXComponents

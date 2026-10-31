@@ -1,3 +1,13 @@
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
+dist
+.output
+.wrangler
+styled-system
+.content-collections
+src/routeTree.gen.ts
+.idea
+.claude
+.mcp.json
+AGENTS.md
