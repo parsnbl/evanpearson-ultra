@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from 'styled-system/css'
+import { ResumePage } from '#/features/resume/ResumePage'
+import { resumeSearchSchema } from '#/features/resume/resume.search'
 
-export const Route = createFileRoute('/')({ component: Home })
-
-function Home() {
-  return <h1 className={css({ color: 'accent', p: 'gutter' })}>Evan Pearson</h1>
-}
+export const Route = createFileRoute('/')({
+  validateSearch: resumeSearchSchema,
+  component: ResumePage,
+})
