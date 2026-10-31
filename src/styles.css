@@ -1,12 +1,1 @@
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  min-height: 100%;
-}
-
-body {
-  margin: 0;
-}
+@layer reset, base, tokens, recipes, utilities;

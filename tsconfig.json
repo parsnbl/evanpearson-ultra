@@ -9,6 +9,7 @@
     "paths": {
       "#/*": ["./src/*"],
       "@/*": ["./src/*"],
+      "styled-system/*": ["./styled-system/*"],
       "content-collections": ["./.content-collections/generated"]
     },
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
