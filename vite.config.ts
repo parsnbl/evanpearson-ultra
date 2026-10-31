@@ -12,6 +12,7 @@ import contentCollections from '@content-collections/vite'
 import mdx from '@mdx-js/rollup'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
+import { SITE } from './src/shared/site'
 
 const config = defineConfig({
   resolve: {
@@ -35,8 +36,11 @@ const config = defineConfig({
       prerender: {
         enabled: true,
         crawlLinks: true,
+        failOnError: true,
+        autoStaticPathsDiscovery: false,
       },
-      sitemap: { host: 'https://evan-pearson.com' },
+      pages: [{ path: '/' }],
+      sitemap: { enabled: true, host: SITE.url },
     }),
     rsc(),
     viteReact({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
