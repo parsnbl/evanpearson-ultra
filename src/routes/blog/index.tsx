@@ -1,12 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { getPostSummaries } from '#/features/blog/blog.functions'
+import { BlogIndexPage } from '#/features/blog/BlogIndexPage'
 
-export const Route = createFileRoute('/blog/')({ component: BlogIndexPage })
+export const Route = createFileRoute('/blog/')({
+  loader: () => getPostSummaries(),
+  component: BlogIndexRoute,
+})
 
 /**
- * Placeholder blog index until the posts collection exists.
- * @returns A heading
+ * Connects the blog index loader data to the feature page.
+ * @returns The blog index page
  * @throws Never
  */
-function BlogIndexPage() {
-  return <h1>Blog</h1>
+function BlogIndexRoute() {
+  const posts = Route.useLoaderData()
+  return <BlogIndexPage posts={posts} />
 }
