@@ -39,7 +39,7 @@ const config = defineConfig({
         failOnError: true,
         autoStaticPathsDiscovery: false,
       },
-      pages: [{ path: '/' }],
+      pages: [{ path: '/' }, { path: '/rss.xml', sitemap: { exclude: true } }],
       sitemap: { enabled: true, host: SITE.url },
     }),
     rsc(),

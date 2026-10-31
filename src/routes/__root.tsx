@@ -24,7 +24,15 @@ export const Route = createRootRoute({
       { property: 'og:locale', content: SITE.locale },
       { name: 'twitter:card', content: 'summary_large_image' },
     ],
-    links: [{ rel: 'stylesheet', href: appCss }],
+    links: [
+      { rel: 'stylesheet', href: appCss },
+      {
+        rel: 'alternate',
+        type: 'application/rss+xml',
+        title: `${SITE.name} RSS`,
+        href: '/rss.xml',
+      },
+    ],
   }),
   shellComponent: RootDocument,
   component: RootLayout,

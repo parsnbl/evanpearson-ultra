@@ -13,6 +13,7 @@ const styles = {
   postTitle: css({ fontSize: 'xl', fontWeight: 'semibold', color: 'accent' }),
   date: css({ fontSize: 'sm', color: 'fg.muted' }),
   empty: css({ color: 'fg.muted' }),
+  rss: css({ display: 'inline-block', mt: '10', color: 'accent' }),
 }
 
 /**
@@ -51,6 +52,9 @@ export function BlogIndexPage({ posts }: Props) {
           ))}
         </ul>
       )}
+      <a href="/rss.xml" className={styles.rss}>
+        RSS feed
+      </a>
     </>
   )
 }
