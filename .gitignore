@@ -24,3 +24,10 @@ styled-system
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# jetbrains
+.idea/
+
+# ai
+.claude/plans/*
+.mcp.json
