@@ -1,9 +1,7 @@
 import type { MDXComponents } from 'mdx/types'
-import { hero } from 'styled-system/recipes/hero'
-import type { HeroVariant } from 'styled-system/recipes/hero'
 import { mdxComponents } from '#/shared/mdx/mdxComponents'
 
-type HeroProps = HeroVariant & {
+type HeroProps = {
   title: string
   children?: React.ReactNode
 }
@@ -12,14 +10,13 @@ type HeroProps = HeroVariant & {
  * Landing page hero with a headline and supporting copy.
  * @param props - Hero props
  * @param props.title - Main headline
- * @param props.align - Text alignment variant
  * @param props.children - Supporting copy
  * @returns The hero section
  * @throws Never
  */
-export function Hero({ title, align, children }: HeroProps) {
+export function Hero({ title, children }: HeroProps) {
   return (
-    <section className={hero({ align })}>
+    <section>
       <h1>{title}</h1>
       {children}
     </section>

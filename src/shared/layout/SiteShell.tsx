@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router'
-import { css } from 'styled-system/css'
 import { SITE } from '#/shared/site'
 
 type Props = {
@@ -11,32 +10,6 @@ const NAV_LINKS = [
   { to: '/blog', label: 'Blog' },
 ] as const
 
-const styles = {
-  header: css({
-    borderBottomWidth: '1px',
-    borderColor: 'border',
-    bg: 'surface',
-  }),
-  nav: css({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '4',
-    maxW: 'content',
-    mx: 'auto',
-    px: 'gutter',
-    py: '4',
-  }),
-  brand: css({ fontWeight: 'bold', fontFamily: 'heading' }),
-  links: css({ display: 'flex', gap: '4', listStyle: 'none' }),
-  link: css({
-    color: 'fg.muted',
-    _hover: { color: 'fg' },
-    '&[data-status="active"]': { color: 'accent' },
-  }),
-  main: css({ maxW: 'content', mx: 'auto', px: 'gutter', py: 'section' }),
-}
-
 /**
  * Site-wide layout shell with the primary navigation.
  * @param props - Component props
@@ -47,19 +20,13 @@ const styles = {
 export function SiteShell({ children }: Props) {
   return (
     <>
-      <header className={styles.header}>
-        <nav aria-label="Primary" className={styles.nav}>
-          <Link to="/" className={styles.brand}>
-            {SITE.name}
-          </Link>
-          <ul className={styles.links}>
+      <header>
+        <nav aria-label="Primary">
+          <Link to="/">{SITE.name}</Link>
+          <ul>
             {NAV_LINKS.map((link) => (
               <li key={link.to}>
-                <Link
-                  to={link.to}
-                  className={styles.link}
-                  activeOptions={{ exact: link.to === '/' }}
-                >
+                <Link to={link.to} activeOptions={{ exact: link.to === '/' }}>
                   {link.label}
                 </Link>
               </li>
@@ -67,7 +34,7 @@ export function SiteShell({ children }: Props) {
           </ul>
         </nav>
       </header>
-      <main className={styles.main}>{children}</main>
+      <main>{children}</main>
     </>
   )
 }
