@@ -19,7 +19,7 @@ export const Route = createRootRoute({
       { title: SITE.title },
       { name: 'description', content: SITE.description },
       { name: 'author', content: SITE.author.name },
-      { name: 'color-scheme', content: 'light dark' },
+      { name: 'color-scheme', content: 'dark' },
       { property: 'og:site_name', content: SITE.name },
       { property: 'og:locale', content: SITE.locale },
       { name: 'twitter:card', content: 'summary_large_image' },
